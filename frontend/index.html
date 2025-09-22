@@ -68,7 +68,7 @@ setInterval(async () => {
   if (textToSend && textToSend !== lastSent) {
     lastSent = textToSend;
     try {
-      const response = await fetch("https://YOUR_BACKEND_URL/analyze", {
+      const response = await fetch("https://listening-app-4pdm.onrender.com", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({text: textToSend})
