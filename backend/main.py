@@ -1,9 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import os
 
 # Load Bible text
-with open("bible_kjv.txt", "r", encoding="utf-8") as f:
+# with open("bible_kjv.txt", "r", encoding="utf-8") as f:
+#     bible_text = f.read()
+
+BASE_DIR = os.path.dirname(__file__)
+with open(os.path.join(BASE_DIR, "bible_kjv.txt"), "r", encoding="utf-8") as f:
     bible_text = f.read()
 
 app = FastAPI()
