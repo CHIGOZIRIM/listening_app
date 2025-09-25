@@ -5,7 +5,7 @@ import os
 
 # Load Bible text
 # with open("bible_kjv.txt", "r", encoding="utf-8") as f:
-#     bible_text = f.read()
+#     bible_text = f.read()no n
 
 BASE_DIR = os.path.dirname(__file__)
 with open(os.path.join(BASE_DIR, "bible_kjv.txt"), "r", encoding="utf-8") as f:
