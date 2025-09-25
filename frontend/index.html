@@ -69,7 +69,7 @@ setInterval(async () => {
     lastSent = textToSend;
     console.log("Sending transcript:", textToSend);  // <--- add this
     try {
-      const response = await fetch("https://listening-app-4pdm.onrender.com", {
+      const response = await fetch("https://listening-app-4pdm.onrender.com/analyze", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({text: textToSend})
