@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
-import faiss
+import hnswlib
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
@@ -19,18 +19,24 @@ verses = [line.strip() for line in bible_text.splitlines() if line.strip()]
 # ==========================
 # Load Embedding Model
 # ==========================
-# Small but effective model; can swap for larger models for better semantic understanding
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
 # Compute embeddings for all verses
 print("Computing verse embeddings...")
 verse_embeddings = model.encode(verses, convert_to_numpy=True, show_progress_bar=True)
 
-# Build FAISS index
+# ==========================
+# Build hnswlib index
+# ==========================
 embedding_dim = verse_embeddings.shape[1]
-index = faiss.IndexFlatL2(embedding_dim)
-index.add(verse_embeddings)
-print(f"FAISS index built with {len(verses)} verses.")
+num_elements = len(verse_embeddings)
+
+# Create index
+index = hnswlib.Index(space='l2', dim=embedding_dim)
+index.init_index(max_elements=num_elements, ef_construction=200, M=16)
+index.add_items(verse_embeddings)
+index.set_ef(50)  # query time parameter
+print(f"hnswlib index built with {num_elements} verses.")
 
 # ==========================
 # FastAPI App
@@ -56,8 +62,8 @@ def search_scriptures(query, max_results=5):
     # Step 1: Embed query
     query_vec = model.encode([query], convert_to_numpy=True)
 
-    # Step 2: Search FAISS index
-    distances, indices = index.search(query_vec, max_results)
+    # Step 2: Search hnswlib index
+    indices, distances = index.knn_query(query_vec, k=max_results)
 
     # Step 3: Return top results
     results = []
