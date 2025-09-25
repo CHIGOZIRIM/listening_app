@@ -1,2 +1,7 @@
 fastapi
 uvicorn[standard]
+faiss-cpu
+numpy
+sentence-transformers
+scikit-learn
+
