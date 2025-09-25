@@ -67,13 +67,16 @@ setInterval(async () => {
   const textToSend = (finalTranscript + interimTranscript).trim();
   if (textToSend && textToSend !== lastSent) {
     lastSent = textToSend;
+    console.log("Sending transcript:", textToSend);  // <--- add this
     try {
       const response = await fetch("https://listening-app-4pdm.onrender.com", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({text: textToSend})
       });
+      console.log("Fetch status:", response.status); // <--- add this
       const data = await response.json();
+      console.log("Response JSON:", data);          // <--- add this
       resultsEl.innerText = data.matches.join('\n');
     } catch (err) {
       console.error("Failed to send transcript", err);
