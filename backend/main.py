@@ -13,6 +13,10 @@ with open(os.path.join(BASE_DIR, "bible_kjv.txt"), "r", encoding="utf-8") as f:
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"status": "ok"}
+
 # Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
