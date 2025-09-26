@@ -1,12 +1,16 @@
+import os
+
+# Remove any proxy environment variables
+os.environ.pop("http_proxy", None)
+os.environ.pop("https_proxy", None)
+os.environ.pop("HTTP_PROXY", None)
+os.environ.pop("HTTPS_PROXY", None)
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import os
 from openai import OpenAI
 
-# Clean up proxy variables (Render sometimes sets these)
-os.environ.pop("http_proxy", None)
-os.environ.pop("https_proxy", None)
 
 BASE_DIR = os.path.dirname(__file__)
 with open(os.path.join(BASE_DIR, "bible_kjv.txt"), "r", encoding="utf-8") as f:
